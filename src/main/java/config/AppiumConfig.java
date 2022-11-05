@@ -22,8 +22,8 @@ public class AppiumConfig {
         capabilities.setCapability("appPackage","com.sheygam.contactapp");
         capabilities.setCapability("appActivity",".SplashActivity");
         capabilities.setCapability("automationName","Appium");
-        //capabilities.setCapability("automationname", "uiautomator2");
-        capabilities.setCapability("automationName", "UiAutomator2");
+
+        capabilities.setCapability("automationName", "UiAutomator1");
         capabilities.setCapability("app","C:\\Users\\evnik\\Downloads\\contacts-android.apk");
         driver=new AppiumDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"),capabilities);
 
