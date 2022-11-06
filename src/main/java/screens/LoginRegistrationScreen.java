@@ -10,7 +10,19 @@ public class LoginRegistrationScreen extends BaseScreen{
         super(driver);
     }
 
-    @FindBy (xpath = "")
+    @FindBy (xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputEmail']")
     AndroidElement editTextEmail;
+
+    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputPassword']")
+
+    AndroidElement editTextPassword;
+
+    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/regBtn']")
+
+    AndroidElement buttonRegistration;
+
+    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/loginBtn']")
+
+    AndroidElement buttonLogin;
 
 }
