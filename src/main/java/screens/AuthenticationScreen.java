@@ -3,7 +3,13 @@ package screens;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
 import models.Auth;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import java.time.Duration;
 
 public class AuthenticationScreen extends BaseScreen{
 
@@ -37,6 +43,8 @@ public class AuthenticationScreen extends BaseScreen{
     AndroidElement registrationButton;
 
 
+
+
     public ContactListScreen login(Auth auth){
         should(editTextEmail,5);
         type(editTextEmail,auth.getEmail());
@@ -65,6 +73,22 @@ public class AuthenticationScreen extends BaseScreen{
         //pause(2000);
         return new ContactListScreen(driver) ;
     }
+
+
+    public ContactListScreen submitRegistration() {
+        registrationButton.click();
+        return new ContactListScreen(driver);
+    }
+
+    public ContactListScreen registration(Auth auth) {
+        should(editTextEmail,5);
+        type(editTextEmail,auth.getEmail());
+        type(editTextPassword,auth.getPassword());
+        registrationButton.click();
+
+        return new ContactListScreen(driver);
+    }
+
 
 
 

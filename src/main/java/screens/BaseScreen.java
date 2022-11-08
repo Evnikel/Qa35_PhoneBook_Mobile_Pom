@@ -41,4 +41,6 @@ public class BaseScreen {
         return new WebDriverWait(driver,time)
                 .until(ExpectedConditions.textToBePresentInElement(element,text));
     }
+
+
 }

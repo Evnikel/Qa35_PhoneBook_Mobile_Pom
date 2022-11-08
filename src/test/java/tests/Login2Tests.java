@@ -13,8 +13,8 @@ public class Login2Tests extends AppiumConfig {
     public void loginSuccess()  {
 
         new AuthenticationScreen(driver)
-                .fillEmail("noa@gmail.com") //AuthenticationScreen
-                .fillPassword("Nnoa12345$")  //AuthenticationScreen
+                .fillEmail("evnikel@gmail.com") //AuthenticationScreen
+                .fillPassword("Elena1234$@")  //AuthenticationScreen
                 .submitLogin()//ContactListScreen
                 .assertContactListActivityPresent()
                 .logout();
@@ -23,7 +23,7 @@ public class Login2Tests extends AppiumConfig {
     @Test
     public void loginSuccessModel(){
         new AuthenticationScreen(driver)
-                .login(Auth.builder().email("noa@gmail.com").password("Nnoa12345$").build())
+                .login(Auth.builder().email("evnikel@gmail.com").password("Elena1234$@").build())
                 .assertContactListActivityPresent()
                 .logout();
 

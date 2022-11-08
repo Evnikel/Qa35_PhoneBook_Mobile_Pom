@@ -29,6 +29,15 @@ public class ContactListScreen extends BaseScreen{
     @FindBy(xpath = "//*[@content-desc='add']")
     AndroidElement plusButton;
 
+    @FindBy(xpath= "//*[@text='Error']")
+    AndroidElement alertError;
+
+    @FindBy (id = "android:id/button1")
+    AndroidElement backButton;
+
+    @FindBy (id = "android:id/contentPanel")
+    AndroidElement errorMessage;
+
     public ContactListScreen assertContactListActivityPresent(){
         Assert.assertTrue(isContactListActivityPresent());
         return this;
@@ -43,4 +52,11 @@ public class ContactListScreen extends BaseScreen{
     }
 
 
+    public AndroidElement checkTextError(String text) {
+        should(alertError,5);
+        Assert.assertTrue(alertError.getText().contains(text));
+        backButton.click();
+
+        return alertError;
+    }
 }
