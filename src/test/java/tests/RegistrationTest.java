@@ -46,4 +46,13 @@ public class RegistrationTest extends AppiumConfig {
 
     }
 
+    @Test
+    public void registrationWrongPassword(){
+        AndroidElement res = new AuthenticationScreen(driver)
+                .registration(Auth.builder().email("evnikel@gmail.com").password("123").build())
+                .checkTextMessage("{password= At least 8 characters; Must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number; Can contain special characters [@$#^&*!]}");
+
+
+    }
+
 }

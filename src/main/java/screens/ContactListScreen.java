@@ -35,7 +35,9 @@ public class ContactListScreen extends BaseScreen{
     @FindBy (id = "android:id/button1")
     AndroidElement backButton;
 
-    @FindBy (id = "android:id/contentPanel")
+    @FindBy (xpath= "//*[@text='{password= At least 8 characters; Must contain at least 1 uppercase letter," +
+            " 1 lowercase letter, and 1 number;" +
+            " Can contain special characters [@$#^&*!]}']")
     AndroidElement errorMessage;
 
     public ContactListScreen assertContactListActivityPresent(){
@@ -55,6 +57,14 @@ public class ContactListScreen extends BaseScreen{
     public AndroidElement checkTextError(String text) {
         should(alertError,5);
         Assert.assertTrue(alertError.getText().contains(text));
+        backButton.click();
+
+        return alertError;
+    }
+
+    public AndroidElement checkTextMessage(String text) {
+        should(errorMessage,5);
+        Assert.assertTrue(errorMessage.getText().contains(text));
         backButton.click();
 
         return alertError;
