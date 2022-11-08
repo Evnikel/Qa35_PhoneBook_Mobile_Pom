@@ -3,6 +3,7 @@ package screens;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 public class ContactListScreen extends BaseScreen{
     public ContactListScreen(AppiumDriver<AndroidElement> driver) {
@@ -25,14 +26,17 @@ public class ContactListScreen extends BaseScreen{
 
     }
 
-
-
-
     @FindBy(xpath = "//*[@content-desc='add']")
     AndroidElement plusButton;
 
+    public ContactListScreen assertContactListActivityPresent(){
+        Assert.assertTrue(isContactListActivityPresent());
+        return this;
+    }
+
 
     public boolean isContactListActivityPresent(){
+        should(plusButton,5);
         return isShouldHave(activityViewText, "Contact list", 5);
 
 

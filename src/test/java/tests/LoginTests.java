@@ -3,6 +3,7 @@ package tests;
 import config.AppiumConfig;
 import models.Auth;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
 import screens.ContactListScreen;
@@ -21,8 +22,6 @@ public class LoginTests extends AppiumConfig {
                 .isContactListActivityPresent();
         Assert.assertTrue(res);
 
-        new ContactListScreen(driver)
-                .logout();
     }
 
     @Test
@@ -34,6 +33,11 @@ public class LoginTests extends AppiumConfig {
                 .isContactListActivityPresent();
         Assert.assertTrue(res);
 
+
+    }
+
+    @AfterMethod
+    public void logoutFromSys(){
         new ContactListScreen(driver)
                 .logout();
     }
