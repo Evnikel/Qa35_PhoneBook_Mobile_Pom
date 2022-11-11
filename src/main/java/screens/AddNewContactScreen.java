@@ -2,38 +2,43 @@ package screens;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
+import models.Contact;
 import org.openqa.selenium.support.FindBy;
 
 public class AddNewContactScreen extends BaseScreen{
     public AddNewContactScreen(AppiumDriver<AndroidElement> driver) {
         super(driver);
     }
+    @FindBy(id="com.sheygam.contactapp:id/inputName")
+    AndroidElement nameEditText;
+    @FindBy(id="com.sheygam.contactapp:id/inputLastName")
+    AndroidElement lastNameEditText;
+    @FindBy(id="com.sheygam.contactapp:id/inputEmail")
+    AndroidElement emailEditText;
+    @FindBy(id="com.sheygam.contactapp:id/inputPhone")
+    AndroidElement phoneEditText;
+    @FindBy(id="com.sheygam.contactapp:id/inputAddress")
+    AndroidElement addressEditText;
+    @FindBy(id="com.sheygam.contactapp:id/inputDesc")
+    AndroidElement descriptionEditText;
+    @FindBy(id="com.sheygam.contactapp:id/createBtn")
+    AndroidElement createButton;
 
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputName']")
-    AndroidElement editTextName;
+    public AddNewContactScreen fillContactForm(Contact contact){
+        should(nameEditText,3);
+        type2(nameEditText, contact.getName());
+        type2(lastNameEditText, contact.getLastname());
+        type2(emailEditText, contact.getEmail());
+        type2(phoneEditText, contact.getPhone());
+        type2(addressEditText, contact.getAddress());
+        type2(descriptionEditText, contact.getDescription());
+        return  this;
+    }
 
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputLastName']")
+    public ContactListScreen  submitContactForm(){
+        createButton.click();
+        pause(5000);
+        return new ContactListScreen(driver);
+    }
 
-    AndroidElement editTextLastName;
-
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputEmail']")
-
-    AndroidElement editTextEmail;
-
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputPhone']")
-
-    AndroidElement editTextPhone;
-
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputAddress']")
-
-    AndroidElement editTextAddress;
-
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/inputDesc']")
-
-    AndroidElement editTextDescripcion;
-
-    @FindBy(xpath = "//*[@resource-id = 'com.sheygam.contactapp:id/createBtn']")
-
-    AndroidElement ButtonCreate;
 }
-
