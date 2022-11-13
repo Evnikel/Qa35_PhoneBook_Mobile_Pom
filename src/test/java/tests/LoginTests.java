@@ -30,7 +30,7 @@ public class LoginTests extends AppiumConfig {
 //        boolean res  = new SplashScreen(driver)
 //                .checkVersion("1.0.0")
         boolean res = new AuthenticationScreen(driver)
-                .login(Auth.builder().email("evnikel@gmail.com").password("NElena1234$@").build())
+                .login(Auth.builder().email("evnikel@gmail.com").password("Elena1234$@").build())
                 .isContactListActivityPresent();
         Assert.assertTrue(res);
 

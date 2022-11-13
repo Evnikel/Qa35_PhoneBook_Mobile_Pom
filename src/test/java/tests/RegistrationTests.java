@@ -13,8 +13,8 @@ public class RegistrationTests extends AppiumConfig {
     public void registrationSuccess(){
         int i = new Random().nextInt(1000)+1000;
         new AuthenticationScreen(driver)
-                .fillEmail("fox"+i+"@mail.com")
-                .fillPassword("Ww12345!")
+                .fillEmail("elen"+i+"@gmail.com")
+                .fillPassword("Ev1234$@")
                 .submitRegistration()
                 .assertContactListActivityPresent()
                 .logout();
@@ -25,18 +25,18 @@ public class RegistrationTests extends AppiumConfig {
     public void registrationNegativeWrongEmail(){
 
         new AuthenticationScreen(driver)
-                .fillEmail("evnikmail.com")
-                .fillPassword("Ww12345!")
+                .fillEmail("evnikgmail.com")
+                .fillPassword("Ev1234$@")
                 .submitRegistrationNegative()
                 .isErorrMessageContaisText("must be a well-formed email address");
 
     }
 
-    @Test
+    @Test(enabled = false)
     public void registrationNegativeWrongPassword(){
 
         new AuthenticationScreen(driver)
-                .registrationUnsuccessful(Auth.builder().email("bob@mail.com").password("Bb123").build())
+                .registrationUnsuccessful(Auth.builder().email("elen@gmail.com").password("Ev1").build())
                 .isErorrMessageContaisTextInAlert("At least 8 character");
     }
 
@@ -44,7 +44,7 @@ public class RegistrationTests extends AppiumConfig {
     public void registrationSuccessModel(){
         int i = new Random().nextInt(1000)+1000;
         new AuthenticationScreen(driver)
-                .registration(Auth.builder().email("bob"+i+"@mail.com").password("Bb12345$").build())
+                .registration(Auth.builder().email("elen"+i+"@gmail.com").password("Ev1234$@").build())
                 .assertContactListActivityPresent()
                 .logout();
     }

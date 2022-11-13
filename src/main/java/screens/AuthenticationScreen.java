@@ -26,10 +26,12 @@ public class AuthenticationScreen extends BaseScreen{
     AndroidElement loginButton;
     @FindBy (id = "com.sheygam.contactapp:id/regBtn")
     AndroidElement registrationButton;
+
     @FindBy(id = "android:id/message")
     AndroidElement errorTextView;
-    @FindBy(id="android:id/button1")
+    @FindBy(id = "android:id/button1")
     AndroidElement okBtn;
+
 
     public AuthenticationScreen isErorrMessageContaisText(String text){
         pause(2000);
@@ -39,7 +41,7 @@ public class AuthenticationScreen extends BaseScreen{
         return this;
     }
     public AuthenticationScreen isErorrMessageContaisTextInAlert(String text){
-        Alert alert = new WebDriverWait(driver,3)
+        Alert alert = new WebDriverWait(driver,10)
                 .until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert();
         System.out.println(alert.getText());
