@@ -5,19 +5,25 @@ import models.Auth;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
 import screens.ContactListScreen;
 
 public class RemoveContactTests extends AppiumConfig {
 
-    @BeforeClass
+    @BeforeMethod
     public void precondition() {
-        new AuthenticationScreen(driver)
-                .login(Auth.builder().email("evnikel@gmail.com").password("Elena1234$@").build());
-        //.isContactListActivityPresent();
         new ContactListScreen(driver)
                 .providerOfContacts();
+    }
+
+    @BeforeClass
+    public void precondition1() {
+        new AuthenticationScreen(driver)
+                .login(Auth.builder().email("evnikel@gmail.com").password("Elena1234$@").build())
+        .isContactListActivityPresent();
+
     }
 
 
@@ -36,13 +42,6 @@ public class RemoveContactTests extends AppiumConfig {
                 .removeAllContacts();
             Assert.assertTrue(new ContactListScreen(driver).isNoContactsHere());
 
-
-    }
-
-    @AfterClass
-    public void postCondition() {
-        new ContactListScreen(driver)
-                .logout();
 
     }
 

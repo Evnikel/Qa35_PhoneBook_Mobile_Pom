@@ -153,16 +153,19 @@ public class ContactListScreen extends BaseScreen {
     }
 
     public int checkRemoveOneContact() {
-        int before =contacts.size();
 
-        if(!contacts.isEmpty()) {
+        int before = contacts.size();
+
+        if (!contacts.isEmpty()) {
             removeOneContact();
         }
 
         int after = contacts.size();
-        return before-after;
+        return before - after;
 
     }
+
+
 
     public void removeAllContacts() {
         while (contacts.size() != 0) {
