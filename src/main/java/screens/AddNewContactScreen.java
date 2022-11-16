@@ -3,7 +3,10 @@ package screens;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
 import models.Contact;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 public class AddNewContactScreen extends BaseScreen{
@@ -25,21 +28,6 @@ public class AddNewContactScreen extends BaseScreen{
     @FindBy(id="com.sheygam.contactapp:id/createBtn")
     AndroidElement createButton;
 
-    @FindBy(id = "android:id/message")
-    AndroidElement errorTextView;
-    @FindBy(id = "android:id/button1")
-    AndroidElement okBtn;
-
-
-    public AddNewContactScreen isErorrMessageContaisText(String text){
-        pause(2000);
-        Assert.assertTrue(errorTextView.getText().contains(text));
-        okBtn.click();
-        pause(2000);
-        driver.navigate().back();
-        return this;
-    }
-
     public AddNewContactScreen fillContactForm(Contact contact){
         should(nameEditText,3);
         type2(nameEditText, contact.getName());
@@ -53,14 +41,25 @@ public class AddNewContactScreen extends BaseScreen{
 
     public ContactListScreen  submitContactForm(){
         createButton.click();
-        pause(5000);
+        //pause(5000);
         return new ContactListScreen(driver);
     }
-
-    public AddNewContactScreen submitContactNegativeForm() {
+    public AddNewContactScreen  submitContactFormNegative(){
         createButton.click();
+        pause(5000);
         return this;
     }
+    public AddNewContactScreen isErrorContainsText(String text){
+        Alert alert = new WebDriverWait(driver,5)
+                .until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert();
+        System.out.println(alert.getText());
+        Assert.assertTrue(alert.getText().contains(text));
+        alert.accept();
 
+        return this;
+
+
+    }
 
 }

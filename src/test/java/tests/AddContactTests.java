@@ -4,7 +4,6 @@ import config.AppiumConfig;
 import models.Auth;
 import models.Contact;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
@@ -20,15 +19,15 @@ public class AddContactTests extends AppiumConfig {
                 .login(Auth.builder().email("evnikel@gmail.com").password("Elena1234$@").build());
     }
 
-    @Test
+    @Test(invocationCount = 2)
     public void addNewContactSuccess() {
         int i = new Random().nextInt(1000) + 1000;
 
         Contact contact = Contact.builder()
-                .name("Paula" + i)
-                .lastname("Pop" + i)
-                .email("paula" + i + "@gmail.com")
-                .phone("123456789123")
+                .name("Linor" + i)
+                .lastname("Lin" + i)
+                .email("linor" + i + "@gmail.com")
+                .phone("1234567"+i)
                 .address("Haifa")
                 .description("The best friend").build();
 
@@ -39,17 +38,16 @@ public class AddContactTests extends AppiumConfig {
                 .isContactAddedByName(contact.getName(), contact.getLastname())
                 .isContactAddedByPhone(contact.getPhone());
     }
-
     @Test
-    public void addNewContactSuccessModel() {
+    public void addNewContactSuccessRequiredFields() {
         int i = new Random().nextInt(1000) + 1000;
 
         Contact contact = Contact.builder()
-                .name("Paula" + i)
-                .lastname("Pop" + i)
-                .email("paula" + i + "@gmail.com")
-                .phone("123456789123")
-                .address("Haifa")
+                .name("Viki" + i)
+                .lastname("Snow" + i)
+                .email("viki" + i + "@gmail.com")
+                .phone("4567891"+i)
+                .address("Tel Aviv")
                 .build();
 
         new ContactListScreen(driver)
@@ -61,37 +59,39 @@ public class AddContactTests extends AppiumConfig {
     }
 
     @Test
-    public void addNewContactSNegativeWrongEmail() {
+    public void addNewContactNegativeEmptyName() {
+
         Contact contact = Contact.builder()
-                .name("Paula")
-                .lastname("Pop")
-                .email("paulagmail.com")
-                .phone("123456789123")
-                .address("Haifa")
+                .lastname("Paula")
+                .email("paula@gmail.com")
+                .phone("456789100012")
+                .address("Ashdod")
                 .build();
 
         new ContactListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
-                .submitContactNegativeForm()
-                .isErorrMessageContaisText("must be a well-formed email address");
+                .submitContactFormNegative()
+                .isErrorContainsText("name=must not be blank");
+
     }
 
     @Test
-    public void addNewContactSNegativeWrongPhone() {
+    public void addNewContactNegativeEmptyPhone() {
+
         Contact contact = Contact.builder()
-                .name("Paula")
-                .lastname("Pop")
-                .email("paula@gmail.com")
-                .phone("123456789")
-                .address("Haifa")
+                .name("Loki")
+                .lastname("Tivad")
+                .email("tloki@gmail.com")
+                .address("TelAviv")
                 .build();
 
         new ContactListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
-                .submitContactNegativeForm()
-                .isErorrMessageContaisText("Phone number must contain only digits!");
+                .submitContactFormNegative()
+                .isErrorContainsText("Phone number must contain only digits! And length min 10, max 15!");
+
     }
 
     @AfterClass
@@ -102,7 +102,3 @@ public class AddContactTests extends AppiumConfig {
     }
 
 }
-
-
-
-//{phone=Phone number must contain only digits! And length min 10, max 15!}
