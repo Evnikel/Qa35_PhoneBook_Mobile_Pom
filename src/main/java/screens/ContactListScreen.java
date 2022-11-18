@@ -12,9 +12,6 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 import java.util.List;
-import java.util.Random;
-
-import static java.awt.SystemColor.text;
 
 public class ContactListScreen extends BaseScreen {
     public ContactListScreen(AppiumDriver<AndroidElement> driver) {
@@ -27,31 +24,144 @@ public class ContactListScreen extends BaseScreen {
     AndroidElement moreOptions;
     @FindBy(id = "com.sheygam.contactapp:id/title")
     AndroidElement logoutButton;
+    @FindBy (xpath = "//*[@text = 'Date picker']")
+    AndroidElement datePickerButton;
     @FindBy(xpath = "//*[@content-desc='add']")
     AndroidElement plusButton;
     @FindBy(id = "com.sheygam.contactapp:id/rowName")
     List<AndroidElement> contactNamesList;
     @FindBy(id = "com.sheygam.contactapp:id/rowPhone")
     List<AndroidElement> contactPhonesList;
-    @FindBy(id = "com.sheygam.contactapp:id/rowContainer")
+    @FindBy (id = "com.sheygam.contactapp:id/rowContainer")
     List<AndroidElement> contacts;
-    @FindBy(id = "android:id/button1")
+    @FindBy (id="android:id/button1")
     AndroidElement yesButton;
-
-    @FindBy(id = "android:id/button2")
+    @FindBy(id="android:id/button2")
     AndroidElement cancelButton;
-
     @FindBy(id = "com.sheygam.contactapp:id/emptyTxt")
-    AndroidElement emptyText;
+    AndroidElement emptyTextView;
+
+    int countBefore;
+    int countAfter;
+
+    public DatePickerExampleScreen openDatePickerScreen(){
+        should(moreOptions,5);
+        moreOptions.click();
+        datePickerButton.click();
+
+        return new DatePickerExampleScreen(driver);
+    }
+
+    public EditContactScreen openEditForm(){
+
+        AndroidElement contact = contacts.get(0);
+
+        Rectangle rect = contact.getRect();
+
+        int xB = rect.getX() +rect.getWidth()/8;
+        int xA = rect.getX()+ (rect.getWidth()/8)*7;
+        int y=rect.getY()+ rect.getHeight()/2;
+
+        TouchAction <?> touchAction = new TouchAction<>(driver);
+        touchAction.longPress(PointOption.point(xA,y))
+                .moveTo(PointOption.point(xB,y))
+                .release().perform();
 
 
-    public ContactListScreen isContactAddedByName(String name, String lastName) {
-        checkContainsText(contactNamesList, name + " " + lastName);
+        return new EditContactScreen(driver);
+    }
+
+    public ContactListScreen providerContacts(){
+        if(contacts.size()<3){
+            for (int i = 0; i < 3; i++) {
+                addContact();
+            }
+        }
+
+        return  this;
+    }
+
+    public void addContact(){
+        int i = (int)(System.currentTimeMillis()/1000) %3600;
+        Contact contact = Contact.builder()
+                .name("Test"+i)
+                .lastname("Qa"+i)
+                .email("qa"+i+"@mail.com")
+                .phone("11111111"+i)
+                .address("Tel Qa")
+                .description("For remove tets")
+                .build();
+
+        new ContactListScreen(driver)
+                .openContactForm()
+                .fillContactForm(contact)
+                .submitContactForm();
+    }
+
+    public ContactListScreen isNoContactHere(){
+        Assert.assertTrue(isShouldHave(emptyTextView,"No Contacts. Add One more!",5));
         return this;
     }
 
+    public ContactListScreen removeOneContact(){
+
+
+        //shouldHave(activityViewText,"Contact list",5);
+        countBefore= contacts.size();
+        System.out.println(countBefore);
+
+        AndroidElement contact = contacts.get(0);
+        Dimension dimension = driver.manage().window().getSize();
+        System.out.println(dimension.getHeight());
+        System.out.println( dimension.getWidth());
+
+        Rectangle rect = contact.getRect();
+
+        int xA = rect.getX() +rect.getWidth()/8;
+        int xB = rect.getX()+ (rect.getWidth()/8)*7;
+        //int xB = rect.getX()+ rect.getWidth()*0.8;
+        int y=rect.getY()+ rect.getHeight()/2;
+
+        TouchAction <?> touchAction = new TouchAction<>(driver);
+        touchAction.longPress(PointOption.point(xA,y))
+                .moveTo(PointOption.point(xB,y))
+                .release().perform();
+        should(yesButton,6);
+        yesButton.click();
+        pause(1000);
+        countAfter = contacts.size();
+        System.out.println(countAfter);
+
+
+        return this;
+    }
+
+    public ContactListScreen removeAllContacts(){
+        while (contacts.size()>0){
+            removeOneContact();
+        }
+        return  this;
+    }
+    public ContactListScreen isListSizeOneLess(){
+        Assert.assertEquals(countBefore-countAfter,1);
+
+        return this;
+    }
+
+    public ContactListScreen isContactAddedByName(String name, String lastName) {
+        checkContainsText(contactNamesList,name+" "+lastName);
+        return this;
+    }
+    public ContactListScreen isContactAddedByNameOnly(String name) {
+        checkContainsText(contactNamesList,name);
+        return this;
+    }
+    public ContactListScreen isContactAddedByLastNameOnly(String lastname) {
+        checkContainsText(contactNamesList,lastname);
+        return this;
+    }
     public ContactListScreen isContactAddedByPhone(String phone) {
-        checkContainsText(contactPhonesList, phone);
+        checkContainsText(contactPhonesList,phone);
 
         return this;
     }
@@ -70,7 +180,7 @@ public class ContactListScreen extends BaseScreen {
 
     public AddNewContactScreen openContactForm() {
 
-        if (isDisplayedWithExp(plusButton)) {
+        if(isDisplayedWithExp(plusButton)){
             plusButton.click();
         }
         return new AddNewContactScreen(driver);
@@ -121,82 +231,5 @@ public class ContactListScreen extends BaseScreen {
     public boolean isContactListActivityPresent() {
         should(plusButton, 5);
         return isShouldHave(activityViewText, "Contact list", 5);
-    }
-
-    public ContactListScreen removeOneContact() {
-
-
-        //shouldHave(activityViewText,"Contact list",5);
-
-        AndroidElement contact = contacts.get(0);
-        Dimension dimension = driver.manage().window().getSize();
-        System.out.println(dimension.getHeight());
-        System.out.println(dimension.getWidth());
-
-        Rectangle rect = contact.getRect();
-
-        int xA = rect.getX() + rect.getWidth() / 8;
-        int xB = rect.getX() + (rect.getWidth() / 8) * 7;
-        //int xB = rect.getX()+ rect.getWidth()*0.8;
-        int y = rect.getY() + rect.getHeight() / 2;
-
-        TouchAction<?> touchAction = new TouchAction<>(driver);
-        touchAction.longPress(PointOption.point(xA, y))
-                .moveTo(PointOption.point(xB, y))
-                .release().perform();
-        should(yesButton, 6);
-        yesButton.click();
-
-        pause(7000);
-
-        return this;
-    }
-
-    public int checkRemoveOneContact() {
-
-        int before = contacts.size();
-
-        if (!contacts.isEmpty()) {
-            removeOneContact();
-        }
-
-        int after = contacts.size();
-        return before - after;
-
-    }
-
-
-
-    public void removeAllContacts() {
-        while (contacts.size() != 0) {
-            removeOneContact();
-        }
-
-    }
-
-    public boolean isNoContactsHere() {
-        should(plusButton, 5);
-        return isShouldHave(emptyText, "No Contacts. Add One more!", 5);
-    }
-
-    public void providerOfContacts() {
-        Random random = new Random();
-        if (contacts.size()<4) {
-            for (int i = 0; i < 3; i++) {
-                int index = random.nextInt(100) + 100;
-                Contact contact = Contact.builder()
-                        .name("Linor" + index)
-                        .lastname("Lin" + index)
-                        .email("linor" + index + "@gmail.com")
-                        .phone("1234567" + index)
-                        .address("Haifa")
-                        .build();
-
-                new ContactListScreen(driver)
-                        .openContactForm()
-                        .fillContactForm(contact)
-                        .submitContactForm();
-            }
-        }
     }
 }
