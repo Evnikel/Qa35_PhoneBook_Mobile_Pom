@@ -51,9 +51,28 @@ public class EditContactTests extends AppiumConfig {
         new ContactListScreen(driver)
                 .openEditForm()
                 .editFieldContact("email",email)
-                .updateChanges();
-        // isContactAddedByEmail (email);
+                .updateChanges()
+                .isContactAddedByEmail (email);
 
+    }
+
+    @Test
+    public void editAddressOnlySuccess(){
+        int i = new Random().nextInt(1000)+1000;
+        new ContactListScreen(driver)
+                .openEditForm()
+                .editFieldContact("address", "Haifa")
+                .updateChanges()
+                .isContactAddedByAddress("Haifa");
+    }
+    @Test
+    public void editDescriptionOnlySuccess(){
+        int i = new Random().nextInt(1000)+1000;
+        new ContactListScreen(driver)
+                .openEditForm()
+                .editFieldContact("description", "Colleague")
+                .updateChanges()
+                .isContactAddedByDescription("Colleague");
     }
     @AfterClass
     public void postCondition() {

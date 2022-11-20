@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DatePickerExampleScreen extends BaseScreen{
     public DatePickerExampleScreen(AppiumDriver<AndroidElement> driver) {
@@ -31,21 +32,22 @@ public class DatePickerExampleScreen extends BaseScreen{
         return this;
     }
 
-    public DatePickerExampleScreen selectData(String data){
-        pause(1000);
-        String locator = String.format("//*[@content-desc='%s']",data);
-        System.out.println(locator);
+    public DatePickerExampleScreen selectData(String date){
+        String locator = String.format("//*[@content-desc='%s']",date);
+        should(currentDate,5);
         driver.findElement(By.xpath(locator)).click();
         okButton.click();
         return this;
     }
 
-    public DatePickerExampleScreen isDataChanges(String data){  /// "15 December 2022"
+    public void isDataChanges(String date){ /// "15 December 2022"
+        String currentDate = dateTextView.getText(); // " 15/12/2022"
+        LocalDate dateTest = LocalDate.parse(currentDate,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println(date);
 
-        String  currentData = dateTextView.getText() ;  // " 15/12/2022"
-        LocalDate dataTest ;
-        LocalDate dataEl ;
-        Assert.assertEquals(dataTest,dataEl);
-        return this;
+        LocalDate dateElement = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMMM yyyy"));
+
+        Assert.assertEquals(dateTest,dateElement);
     }
+
 }

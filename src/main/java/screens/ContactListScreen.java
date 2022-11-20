@@ -40,6 +40,14 @@ public class ContactListScreen extends BaseScreen {
     AndroidElement cancelButton;
     @FindBy(id = "com.sheygam.contactapp:id/emptyTxt")
     AndroidElement emptyTextView;
+    @FindBy(id = "com.sheygam.contactapp:id/rowPhone")
+    AndroidElement phone;
+    @FindBy(id = "com.sheygam.contactapp:id/emailTxt")
+    AndroidElement emailEditField;
+    @FindBy(id = "com.sheygam.contactapp:id/addressTxt")
+    AndroidElement addressEditField;
+    @FindBy(id = "com.sheygam.contactapp:id/descTxt")
+    AndroidElement descriptionEditField;
 
     int countBefore;
     int countAfter;
@@ -166,6 +174,38 @@ public class ContactListScreen extends BaseScreen {
         return this;
     }
 
+    public ContactListScreen isContactAddedByEmail(String email) {
+        boolean isPresent=false;
+        phone.click();
+        if (emailEditField.getText().equals(email)) {
+            isPresent = true;
+        }
+        driver.navigate().back();
+        Assert.assertTrue(isPresent);
+        return this;
+    }
+
+    public ContactListScreen isContactAddedByAddress(String address) {
+        boolean isPresent=false;
+        phone.click();
+        if (addressEditField.getText().equals(address)) {
+            isPresent = true;
+        }
+        driver.navigate().back();
+        Assert.assertTrue(isPresent);
+        return this;
+    }
+    public ContactListScreen isContactAddedByDescription(String description) {
+        boolean isPresent=false;
+        phone.click();
+        if (descriptionEditField.getText().equals(description)) {
+            isPresent = true;
+        }
+        driver.navigate().back();
+        Assert.assertTrue(isPresent);
+        return this;
+    }
+
     private void checkContainsText(List<AndroidElement> list, String text) {
         boolean isPresent = false;
         for (AndroidElement el : list) {
@@ -232,4 +272,6 @@ public class ContactListScreen extends BaseScreen {
         should(plusButton, 5);
         return isShouldHave(activityViewText, "Contact list", 5);
     }
+
+
 }

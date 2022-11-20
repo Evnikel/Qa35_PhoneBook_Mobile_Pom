@@ -82,4 +82,5 @@ public class EditContactScreen extends BaseScreen{
         }
         return this;
     }
+
 }
